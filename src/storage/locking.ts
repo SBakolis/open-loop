@@ -1,4 +1,5 @@
-import { open, stat, unlink } from "node:fs/promises";
+import { mkdir, open, stat, unlink } from "node:fs/promises";
+import { dirname } from "node:path";
 
 const sleep = (milliseconds: number) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -9,6 +10,7 @@ export async function withFileLock<T>(
   staleMs = 30_000,
 ): Promise<T> {
   const lockPath = `${path}.lock`;
+  await mkdir(dirname(lockPath), { recursive: true, mode: 0o700 });
   for (let attempt = 0; attempt < 50; attempt++) {
     try {
       const handle = await open(lockPath, "wx", 0o600);

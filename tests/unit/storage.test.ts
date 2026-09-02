@@ -6,6 +6,17 @@ import { JsonStore } from "../../src/storage/json-store.js";
 import { makeLoop } from "../fixtures/loop.js";
 
 describe("JSON state store", () => {
+  it("creates a missing state directory on first update", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "open-loop-first-write-"));
+    const path = join(directory, "nested", "state.json");
+    const store = new JsonStore(path);
+
+    await store.update((loops) => [...loops, makeLoop()]);
+
+    expect((await store.load()).loops).toHaveLength(1);
+    expect(JSON.parse(await readFile(path, "utf8")).revision).toBe(1);
+  });
+
   it("round trips and serializes concurrent updates", async () => {
     const directory = await mkdtemp(join(tmpdir(), "open-loop-"));
     const path = join(directory, "state.json");

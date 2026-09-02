@@ -1,6 +1,6 @@
 # Smoke Test Report
 
-Date: 2026-09-02
+Date: 2026-09-03
 
 | Scenario | Host | Result |
 |---|---|---|
@@ -8,6 +8,8 @@ Date: 2026-09-02
 | Host loads packed plugin and config hook registers `/loop` | OpenCode 1.18.19 / macOS | Pass |
 | Installer idempotence and command discovery | OpenCode 1.18.19 / macOS | Pass |
 | Automated unit/integration/race suite | SDK types 1.18.26 / Node 24 | Pass |
+| First state update with a missing parent directory | Node 26 / macOS | Pass |
+| Install, doctor, and entrypoint imports from the `0.1.3` tarball | OpenCode 1.18.19 / Node 26 / macOS | Pass |
 
 ## Published Package Correction
 
