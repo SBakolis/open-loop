@@ -4,6 +4,7 @@ import {
   installPluginInConfig,
   uninstallPluginFromConfig,
 } from "../../src/installer/config-editor.js";
+import { resolveConfigPath } from "../../src/installer/config-path.js";
 
 describe("config editor", () => {
   it("installs idempotently while preserving comments", () => {
@@ -26,5 +27,30 @@ describe("config editor", () => {
     expect(result.content).toContain("@sbakolis/open-loop");
     expect(result.content).not.toContain('"open-loop"');
     expect(countPluginEntries(result.content)).toBe(1);
+  });
+});
+
+describe("config path", () => {
+  it("prefers an existing JSONC config", async () => {
+    const existing = new Set(["/config/opencode.json", "/config/opencode.jsonc"]);
+
+    await expect(
+      resolveConfigPath("/config", async (path) => existing.has(path)),
+    ).resolves.toBe("/config/opencode.jsonc");
+  });
+
+  it("uses an existing JSON config when JSONC is absent", async () => {
+    await expect(
+      resolveConfigPath(
+        "/config",
+        async (path) => path === "/config/opencode.json",
+      ),
+    ).resolves.toBe("/config/opencode.json");
+  });
+
+  it("creates JSONC when no config exists", async () => {
+    await expect(
+      resolveConfigPath("/config", async () => false),
+    ).resolves.toBe("/config/opencode.jsonc");
   });
 });

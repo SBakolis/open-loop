@@ -6,10 +6,15 @@
 
 ```sh
 opencode plugin @sbakolis/open-loop --global
+```
+
+Or use the package installer:
+
+```sh
 npx @sbakolis/open-loop install
 ```
 
-The second command idempotently registers the plugin and installs the `/loop` command in `~/.config/opencode`. Restart OpenCode after installation because configuration and plugins are loaded at startup. Use `npx @sbakolis/open-loop install --project` for project-local installation, `npx @sbakolis/open-loop uninstall`, or `npx @sbakolis/open-loop doctor`.
+Either method registers the plugin and exposes `/loop`; do not run both. The package installer preserves an existing `opencode.jsonc` or `opencode.json`, preferring JSONC when both exist, and also installs a command-file fallback in `~/.config/opencode`. Restart OpenCode after installation because configuration and plugins are loaded at startup. Use `npx @sbakolis/open-loop install --project` for project-local installation, `npx @sbakolis/open-loop uninstall`, or `npx @sbakolis/open-loop doctor`.
 
 ## Command Structure
 

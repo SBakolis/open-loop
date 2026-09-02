@@ -8,19 +8,20 @@ import {
   installPluginInConfig,
   uninstallPluginFromConfig,
 } from "./config-editor.js";
+import { resolveConfigPath } from "./config-path.js";
 
 const args = new Set(process.argv.slice(2));
 const project = args.has("--project");
 const configDirectory = project
   ? join(process.cwd(), ".opencode")
   : join(homedir(), ".config", "opencode");
-const configPath = join(configDirectory, "opencode.jsonc");
 const commandPath = join(configDirectory, "commands", "loop.md");
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const templatePath = join(packageRoot, "commands", "loop.md");
 
 async function main(): Promise<void> {
   const action = process.argv[2] ?? "install";
+  const configPath = await resolveConfigPath(configDirectory);
   if (action === "doctor") {
     process.stdout.write(`${await doctor(configPath, commandPath)}\n`);
 
