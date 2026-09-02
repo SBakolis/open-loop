@@ -9,4 +9,8 @@ Date: 2026-09-02
 | Installer idempotence and command discovery | OpenCode 1.18.19 / macOS | Pass |
 | Automated unit/integration/race suite | SDK types 1.18.26 / Node 24 | Pass |
 
+## Published Package Correction
+
+The first public package, `@sbakolis/open-loop@0.1.0`, exposed only the root entrypoint. OpenCode's package installer requires `exports["./server"]` and therefore rejected that version. Version `0.1.1` adds the required server entrypoint; `0.1.0` should not be used.
+
 Provider-backed multi-turn scenarios require user credentials and are not claimed as complete until run in a configured host. See `KNOWN_LIMITATIONS.md`.
