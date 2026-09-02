@@ -5,11 +5,11 @@
 ## Install
 
 ```sh
-opencode plugin open-loop --global
-npx open-loop install
+opencode plugin @sbakolis/open-loop --global
+npx @sbakolis/open-loop install
 ```
 
-The second command idempotently registers the plugin and installs the `/loop` command in `~/.config/opencode`. Restart OpenCode after installation because configuration and plugins are loaded at startup. Use `npx open-loop install --project` for project-local installation, `npx open-loop uninstall`, or `npx open-loop doctor`.
+The second command idempotently registers the plugin and installs the `/loop` command in `~/.config/opencode`. Restart OpenCode after installation because configuration and plugins are loaded at startup. Use `npx @sbakolis/open-loop install --project` for project-local installation, `npx @sbakolis/open-loop uninstall`, or `npx @sbakolis/open-loop doctor`.
 
 ## Command Structure
 
@@ -170,7 +170,7 @@ The strict fallback is accepted only on final standalone lines outside code fenc
 ```jsonc
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [["open-loop", {
+  "plugin": [["@sbakolis/open-loop", {
     "bare_mode": "goal",
     "register_command": true,
     "min_goal_delay_seconds": 2,

@@ -34,10 +34,12 @@ async function main(): Promise<void> {
     const edited = installPluginInConfig(existing);
     if (edited.changed) {
       await writeFile(configPath, edited.content, { mode: 0o600 });
-      process.stdout.write(`Updated ${configPath}: added open-loop plugin.\n`);
+      process.stdout.write(
+        `Updated ${configPath}: added @sbakolis/open-loop plugin.\n`,
+      );
     } else {
       process.stdout.write(
-        `${configPath}: open-loop plugin already registered.\n`,
+        `${configPath}: @sbakolis/open-loop plugin already registered.\n`,
       );
     }
     await mkdir(dirname(commandPath), { recursive: true, mode: 0o700 });
@@ -58,7 +60,7 @@ async function main(): Promise<void> {
     if (edited.changed) {
       await writeFile(configPath, edited.content, { mode: 0o600 });
       process.stdout.write(
-        `Updated ${configPath}: removed open-loop plugin.\n`,
+        `Updated ${configPath}: removed @sbakolis/open-loop plugin.\n`,
       );
     }
     await rm(commandPath, { force: true });

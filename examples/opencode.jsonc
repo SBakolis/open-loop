@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [["open-loop", {
+  "plugin": [["@sbakolis/open-loop", {
     "bare_mode": "goal",
     "default_goal_max_runs": 25,
     "restricted_agents": ["plan"]

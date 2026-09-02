@@ -1,15 +1,40 @@
 {
-  "name": "open-loop",
+  "name": "@sbakolis/open-loop",
   "version": "0.1.0",
   "description": "Safe goal-oriented and scheduled autonomous loops for OpenCode",
   "type": "module",
   "license": "MIT",
-  "engines": { "node": ">=20" },
-  "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SBakolis/open-loop.git"
   },
-  "bin": { "open-loop": "./dist/installer/cli.js" },
-  "files": ["dist", "commands", "README.md", "LICENSE", "SECURITY.md", "KNOWN_LIMITATIONS.md"],
+  "homepage": "https://github.com/SBakolis/open-loop#readme",
+  "bugs": {
+    "url": "https://github.com/SBakolis/open-loop/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "open-loop": "dist/installer/cli.js"
+  },
+  "files": [
+    "dist",
+    "commands",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md",
+    "KNOWN_LIMITATIONS.md"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
@@ -19,9 +44,20 @@
     "pack:check": "npm pack --dry-run",
     "prepack": "npm run build"
   },
-  "keywords": ["opencode", "plugin", "agent", "loop", "scheduler"],
-  "peerDependencies": { "@opencode-ai/plugin": ">=1.18.19 <2" },
-  "dependencies": { "jsonc-parser": "^3.3.1", "zod": "^4.1.8" },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "agent",
+    "loop",
+    "scheduler"
+  ],
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.18.19 <2"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1",
+    "zod": "^4.1.8"
+  },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
     "@opencode-ai/plugin": "^1.18.19",

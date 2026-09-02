@@ -1,23 +1,27 @@
 import { applyEdits, modify, parse } from "jsonc-parser";
 
+export const PACKAGE_NAME = "@sbakolis/open-loop";
+const LEGACY_PACKAGE_NAME = "open-loop";
+
 export function installPluginInConfig(
   content: string,
-  packageName = "open-loop",
+  packageName = PACKAGE_NAME,
 ): { content: string; changed: boolean } {
   const root = parse(content || "{}") as Record<string, unknown>;
   const plugins = Array.isArray(root.plugin) ? root.plugin : [];
-  if (
-    plugins.some(
-      (entry) =>
-        entry === packageName ||
-        (Array.isArray(entry) && entry[0] === packageName),
-    )
-  ) {
+  const hasPackage = plugins.some((entry) => matchesPackage(entry, packageName));
+  const withoutLegacy = plugins.filter(
+    (entry) => !matchesPackage(entry, LEGACY_PACKAGE_NAME),
+  );
+  if (hasPackage && withoutLegacy.length === plugins.length) {
     return { content, changed: false };
   }
+  const updatedPlugins = hasPackage
+    ? withoutLegacy
+    : [...withoutLegacy, packageName];
   const updated = applyEdits(
     content || "{}",
-    modify(content || "{}", ["plugin"], [...plugins, packageName], {
+    modify(content || "{}", ["plugin"], updatedPlugins, {
       formattingOptions: { insertSpaces: true, tabSize: 2 },
     }),
   );
@@ -30,14 +34,17 @@ export function installPluginInConfig(
 
 export function uninstallPluginFromConfig(
   content: string,
-  packageName = "open-loop",
+  packageName = PACKAGE_NAME,
 ): { content: string; changed: boolean } {
   const root = parse(content) as Record<string, unknown>;
   const plugins = Array.isArray(root.plugin) ? root.plugin : [];
+  const packageNames = new Set(
+    packageName === PACKAGE_NAME
+      ? [PACKAGE_NAME, LEGACY_PACKAGE_NAME]
+      : [packageName],
+  );
   const filtered = plugins.filter(
-    (entry) =>
-      entry !== packageName &&
-      !(Array.isArray(entry) && entry[0] === packageName),
+    (entry) => ![...packageNames].some((name) => matchesPackage(entry, name)),
   );
   if (filtered.length === plugins.length) {
     return { content, changed: false };
@@ -57,14 +64,24 @@ export function uninstallPluginFromConfig(
 
 export function countPluginEntries(
   content: string,
-  packageName = "open-loop",
+  packageName = PACKAGE_NAME,
 ): number {
   const root = parse(content || "{}") as Record<string, unknown>;
   const plugins = Array.isArray(root.plugin) ? root.plugin : [];
 
-  return plugins.filter(
-    (entry) =>
-      entry === packageName ||
-      (Array.isArray(entry) && entry[0] === packageName),
+  const packageNames =
+    packageName === PACKAGE_NAME
+      ? [PACKAGE_NAME, LEGACY_PACKAGE_NAME]
+      : [packageName];
+
+  return plugins.filter((entry) =>
+    packageNames.some((name) => matchesPackage(entry, name)),
   ).length;
+}
+
+function matchesPackage(entry: unknown, packageName: string): boolean {
+  return (
+    entry === packageName ||
+    (Array.isArray(entry) && entry[0] === packageName)
+  );
 }
